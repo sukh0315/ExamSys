@@ -1,0 +1,354 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ExamSysModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Batch">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BatchName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="BatchCode" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="AssessmentDate" Type="datetime" Nullable="false" />
+          <Property Name="Course" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Language" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NoOfCandidate" Type="int" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedDateTime" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedOn" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="Candidate">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BatchID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RegistrationNo" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="CandidateName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="FatherName" Type="varchar" MaxLength="60" />
+          <Property Name="MotherName" Type="varchar" MaxLength="60" />
+          <Property Name="DOB" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedDateTime" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedOn" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+          <Property Name="Gender" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserID" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="510" />
+          <Property Name="IsLocked" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedDateTime" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedOn" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="TestSchedule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BatchID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TestName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="TimeAllowed" Type="int" Nullable="false" />
+          <Property Name="Num_of_Questions" Type="int" Nullable="false" />
+          <Property Name="TestStartDate" Type="datetime" Nullable="false" />
+          <Property Name="TestEndDate" Type="datetime" Nullable="false" />
+          <Property Name="MaxMarks" Type="int" Nullable="false" />
+          <Property Name="PassMarks" Type="int" Nullable="false" />
+          <Property Name="IsNegative" Type="bit" Nullable="false" />
+          <Property Name="NegativePercent" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsReattempt" Type="bit" Nullable="false" />
+          <Property Name="NumberOfSets" Type="int" Nullable="false" />
+          <Property Name="QuestionCount" Type="int" Nullable="false" />
+          <Property Name="Language" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ConfirmAssessmentDate" Type="datetime" Nullable="false" />
+          <Property Name="Mode" Type="varchar" MaxLength="50" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedDateTime" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedOn" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <Association Name="FK_Candidate_Batch">
+          <End Role="Batch" Type="Self.Batch" Multiplicity="1" />
+          <End Role="Candidate" Type="Self.Candidate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Batch">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Candidate">
+              <PropertyRef Name="BatchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TestSchedule_TestSchedule">
+          <End Role="Batch" Type="Self.Batch" Multiplicity="1" />
+          <End Role="TestSchedule" Type="Self.TestSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Batch">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TestSchedule">
+              <PropertyRef Name="BatchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExamSysModelStoreContainer">
+          <EntitySet Name="Batch" EntityType="Self.Batch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Candidate" EntityType="Self.Candidate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TestSchedule" EntityType="Self.TestSchedule" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Candidate_Batch" Association="Self.FK_Candidate_Batch">
+            <End Role="Batch" EntitySet="Batch" />
+            <End Role="Candidate" EntitySet="Candidate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TestSchedule_TestSchedule" Association="Self.FK_TestSchedule_TestSchedule">
+            <End Role="Batch" EntitySet="Batch" />
+            <End Role="TestSchedule" EntitySet="TestSchedule" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ExamSysModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Batch">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="BatchName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BatchCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AssessmentDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Course" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Language" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NoOfCandidate" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="Candidates" Relationship="Self.FK_Candidate_Batch" FromRole="Batch" ToRole="Candidate" />
+          <NavigationProperty Name="TestSchedules" Relationship="Self.FK_TestSchedule_TestSchedule" FromRole="Batch" ToRole="TestSchedule" />
+        </EntityType>
+        <EntityType Name="Candidate">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="BatchID" Type="Guid" Nullable="false" />
+          <Property Name="RegistrationNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CandidateName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FatherName" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="MotherName" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="DOB" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <Property Name="Gender" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Batch" Relationship="Self.FK_Candidate_Batch" FromRole="Candidate" ToRole="Batch" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="UserID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="510" FixedLength="false" Unicode="true" />
+          <Property Name="IsLocked" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TestSchedule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="BatchID" Type="Guid" Nullable="false" />
+          <Property Name="TestName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TimeAllowed" Type="Int32" Nullable="false" />
+          <Property Name="Num_of_Questions" Type="Int32" Nullable="false" />
+          <Property Name="TestStartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TestEndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MaxMarks" Type="Int32" Nullable="false" />
+          <Property Name="PassMarks" Type="Int32" Nullable="false" />
+          <Property Name="IsNegative" Type="Boolean" Nullable="false" />
+          <Property Name="NegativePercent" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsReattempt" Type="Boolean" Nullable="false" />
+          <Property Name="NumberOfSets" Type="Int32" Nullable="false" />
+          <Property Name="QuestionCount" Type="Int32" Nullable="false" />
+          <Property Name="Language" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ConfirmAssessmentDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Mode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="Batch" Relationship="Self.FK_TestSchedule_TestSchedule" FromRole="TestSchedule" ToRole="Batch" />
+        </EntityType>
+        <Association Name="FK_Candidate_Batch">
+          <End Role="Batch" Type="Self.Batch" Multiplicity="1" />
+          <End Role="Candidate" Type="Self.Candidate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Batch">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Candidate">
+              <PropertyRef Name="BatchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TestSchedule_TestSchedule">
+          <End Role="Batch" Type="Self.Batch" Multiplicity="1" />
+          <End Role="TestSchedule" Type="Self.TestSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Batch">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TestSchedule">
+              <PropertyRef Name="BatchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExamSysEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Batches" EntityType="Self.Batch" />
+          <EntitySet Name="Candidates" EntityType="Self.Candidate" />
+          <EntitySet Name="Logins" EntityType="Self.Login" />
+          <EntitySet Name="TestSchedules" EntityType="Self.TestSchedule" />
+          <AssociationSet Name="FK_Candidate_Batch" Association="Self.FK_Candidate_Batch">
+            <End Role="Batch" EntitySet="Batches" />
+            <End Role="Candidate" EntitySet="Candidates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TestSchedule_TestSchedule" Association="Self.FK_TestSchedule_TestSchedule">
+            <End Role="Batch" EntitySet="Batches" />
+            <End Role="TestSchedule" EntitySet="TestSchedules" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ExamSysModelStoreContainer" CdmEntityContainer="ExamSysEntities">
+          <EntitySetMapping Name="Batches">
+            <EntityTypeMapping TypeName="ExamSysModel.Batch">
+              <MappingFragment StoreEntitySet="Batch">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+                <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+                <ScalarProperty Name="AssessmentDate" ColumnName="AssessmentDate" />
+                <ScalarProperty Name="Course" ColumnName="Course" />
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="NoOfCandidate" ColumnName="NoOfCandidate" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDateTime" ColumnName="CreatedDateTime" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Candidates">
+            <EntityTypeMapping TypeName="ExamSysModel.Candidate">
+              <MappingFragment StoreEntitySet="Candidate">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="BatchID" ColumnName="BatchID" />
+                <ScalarProperty Name="RegistrationNo" ColumnName="RegistrationNo" />
+                <ScalarProperty Name="CandidateName" ColumnName="CandidateName" />
+                <ScalarProperty Name="FatherName" ColumnName="FatherName" />
+                <ScalarProperty Name="MotherName" ColumnName="MotherName" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDateTime" ColumnName="CreatedDateTime" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logins">
+            <EntityTypeMapping TypeName="ExamSysModel.Login">
+              <MappingFragment StoreEntitySet="Login">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDateTime" ColumnName="CreatedDateTime" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TestSchedules">
+            <EntityTypeMapping TypeName="ExamSysModel.TestSchedule">
+              <MappingFragment StoreEntitySet="TestSchedule">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="BatchID" ColumnName="BatchID" />
+                <ScalarProperty Name="TestName" ColumnName="TestName" />
+                <ScalarProperty Name="TimeAllowed" ColumnName="TimeAllowed" />
+                <ScalarProperty Name="Num_of_Questions" ColumnName="Num_of_Questions" />
+                <ScalarProperty Name="TestStartDate" ColumnName="TestStartDate" />
+                <ScalarProperty Name="TestEndDate" ColumnName="TestEndDate" />
+                <ScalarProperty Name="MaxMarks" ColumnName="MaxMarks" />
+                <ScalarProperty Name="PassMarks" ColumnName="PassMarks" />
+                <ScalarProperty Name="IsNegative" ColumnName="IsNegative" />
+                <ScalarProperty Name="NegativePercent" ColumnName="NegativePercent" />
+                <ScalarProperty Name="IsReattempt" ColumnName="IsReattempt" />
+                <ScalarProperty Name="NumberOfSets" ColumnName="NumberOfSets" />
+                <ScalarProperty Name="QuestionCount" ColumnName="QuestionCount" />
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="ConfirmAssessmentDate" ColumnName="ConfirmAssessmentDate" />
+                <ScalarProperty Name="Mode" ColumnName="Mode" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDateTime" ColumnName="CreatedDateTime" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
